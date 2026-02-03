@@ -45,7 +45,7 @@ public class Card
 
         if(rank == 11)
         {
-            return "Jack"
+            return "Jack";
         }
 
         if(rank == 12)
@@ -65,7 +65,7 @@ public class Card
     {
         if(!faceUp)
         {
-            return "[XX]"
+            return "[XX]";
 
         }
 

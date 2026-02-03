@@ -23,7 +23,7 @@ public class Deck
 
             while(r <=13)
             {
-                cards(index) = new Card(r, suits[s]);
+                cards[index] = new Card(r, suits[s]);
                 index++;
                 r++;
             }
@@ -45,7 +45,7 @@ public class Deck
             Card temp = cards[lcv];
             cards[lcv] = cards[j];
             cards[j] = temp;
-            i--;
+            lcv--;
         }
      }
 
