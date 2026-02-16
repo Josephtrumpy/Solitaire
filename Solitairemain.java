@@ -6,6 +6,7 @@ public class Solitairemain {
         Stack<Card>[] field = new Stack[7];
         Stack<Card>[] finish = new Stack[4];
         Stack<Card> middle = new Stack();
+        Stack<Card> drawpile=new Stack<>();
         Deck fun = new Deck();
 
         field[0] = new Stack<Card>();
@@ -32,73 +33,115 @@ public class Solitairemain {
 
             field[lcv].peek().flip();
         }
-for (int x=0;x<10;x++){
-        for(int lcv=0;lcv<7;lcv++){
-            System.out.print(field[lcv].toString());
-            System.out.println();
-        }
+        for (int x=0;x<10;x++){
+            for(int lcv=0;lcv<7;lcv++){
+                System.out.print(field[lcv].toString());
+                System.out.println();
+            }
 
-        Scanner s = new Scanner(System.in);
+            if(drawpile.size() != 0){
+                System.out.println(drawpile.peek().toString());
+            }
 
-        System.out.println("Do you want to move a card");
+            Scanner s = new Scanner(System.in);
 
-        String str = s.nextLine();
+            System.out.println("Do you want to move a card");
 
-        if (str.equalsIgnoreCase("yes")){
-            System.out.println("Where do you want to move from? (1-7)");
-            int from = s.nextInt();
-            System.out.println("Where do you want to move to? (1-7)");
-            int to = s.nextInt();
+            String str = s.nextLine();
 
-            if (field[from-1].isEmpty()){
-                System.out.println("That stack is empty. Try again.");
-            } else {
-                Card temp = field[from-1].peek();
-                if (field[to-1].isEmpty()){
-                    if (temp.getRank() == 13){
-                        field[to-1].add(field[from-1].pop());
+            if (str.equalsIgnoreCase("yes")){
+                System.out.println("Where do you want to move from? (1-8)");
+                int from = s.nextInt();
+                System.out.println("Where do you want to move to? (1-7)");
+                int to = s.nextInt();
+                if (from == 8){
+                    Card temp3 = drawpile.peek();
+                    Card temp4 = field[to-1].peek();
+                    if (drawpile.isEmpty()){
+                        System.out.println("That stack is empty. Try again.");
+                    }
+
+                    if (field[to-1].isEmpty()){
+                        if (temp3.getRank() == 13){
+                            field[to-1].add(drawpile.pop());
+                        } else {
+                            System.out.println("You can only move a King to an empty stack. Try again.");
+                        }
                     } else {
+                        
+                        if (temp3.isRed() != temp4.isRed() && temp3.getRank() == temp4.getRank()-1){
+                            field[to-1].add(drawpile.peek());
+                            drawpile.pop();
+                        } else {
+                        System.out.println("You can only move a card onto a card of the opposite color and one rank higher. Try again.");
+
+                        }
+                    }
+
+                    
+                }
+                else {
+
+                    if (field[from-1].isEmpty()){
+                        System.out.println("That stack is empty. Try again.");
+                    } else {
+                        Card temp = field[from-1].peek();
+                        if (field[to-1].isEmpty()){
+                            if (temp.getRank() == 13){
+                                field[to-1].add(field[from-1].pop());
+                            } else {
                         System.out.println("You can only move a King to an empty stack. Try again.");
                     }
-                } else {
-                    Card temp2 = field[to-1].peek();
-                    System.out.println(temp.isRed());
-                    System.out.println(temp2.isRed());
-                    System.out.println(temp.getRank());
-                    System.out.println(temp2.getRank());
-                    if (temp.isRed() != temp2.isRed() && temp.getRank() == temp2.getRank()-1){
-                        field[to-1].add(field[from-1].pop());
-
-                        field[from-1].peek().flip();
                     } else {
-
-                        while (field[from-1].peek().isFaceUp() != false) {
-                            middle.add(field[from-1].peek());
-                            field[from-1].pop();
-                        }
-
+                        Card temp2 = field[to-1].peek();
                         if (temp.isRed() != temp2.isRed() && temp.getRank() == temp2.getRank()-1){
-                            field[to-1].add(middle.peek());
-                            middle.pop();
-                        }
-                        else{
-                            while(middle.size() > 0){
-                                
-                            field[from-1].add(middle.peek());
-                            middle.pop();
+                            field[to-1].add(field[from-1].pop());
 
+                            if (field[from-1].isEmpty()==false){
+                                field[from-1].peek().flip();
                             }
-                            
-                            System.out.println("You can only move a card onto a card of the opposite color and one rank higher. Try again.");
-                        }
-                        
+                        } else {
 
-                        
-                    }
+                            while (field[from-1].peek().isFaceUp() != false) {
+                                middle.add(field[from-1].peek());
+                                field[from-1].pop();
+                            }
+
+                            if (temp.isRed() != temp2.isRed() && temp.getRank() == temp2.getRank()-1){
+                                field[to-1].add(middle.peek());
+                                middle.pop();
+                            }
+                            else{
+                                while(middle.size() > 0){
+                                
+                                field[from-1].add(middle.peek());
+                                middle.pop();
+
+                                }
+                            
+                                System.out.println("You can only move a card onto a card of the opposite color and one rank higher. Try again.");
+                            }
+                        }
+                    }   
                 }
             }
-        }
+
+        
+            
+        
+            }else{
+                if(str.equalsIgnoreCase("no")){
+                    System.out.println("do you want to draw");
+                    String stri = s.nextLine();
+
+                    if(stri.equalsIgnoreCase("yes")){
+                        drawpile.add(fun.draw());
+                        drawpile.peek().flip();
+                    }
+                }
+        
     
+            }
+        }
     }
-}
 }
